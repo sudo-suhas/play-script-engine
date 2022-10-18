@@ -1,0 +1,18 @@
+#!/bin/sh
+
+VERSION=1.50.0 # Minimum version expected
+
+version_gte() {
+  # based on https://unix.stackexchange.com/a/567537/187074
+  printf '%s\n' "$2" "$1" | sort -V -C
+}
+
+current_version() {
+  bin/golangci-lint --version | awk '{print $4}' | sed 's/v//g'
+}
+
+if [ -f "bin/golangci-lint" ] && version_gte "$(current_version)" $VERSION; then
+  echo "golangci-lint@$(current_version) found"
+else
+  curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b bin v$VERSION
+fi
