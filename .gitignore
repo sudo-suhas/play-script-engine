@@ -1,0 +1,39 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.dylib
+
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# external packages folder
+vendor/
+
+# File that stores custom attributes of a folder on macOS.
+.DS_Store
+
+*.prof
+*.rdb
+
+.idea
+debug
+
+*.env
+*.tmp
+
+**/*.log
+
+.playground
+
+# Binary generated on compile
+play-script-engine
+
+bin/golangci-lint
