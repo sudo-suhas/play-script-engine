@@ -1,3 +1,4 @@
+PROTON_COMMIT := "0acbe8af97af5565155f332b1c837ce5e9fb6956"
 .PHONY: all
 all:fmt lint test
 
@@ -49,6 +50,16 @@ fmt: imports##@lint does a go fmt (stricter variant)
 
 lint: install-linter ##@lint lint source
 	./bin/golangci-lint --config=".golangci-prod.toml" --max-same-issues=0 --max-issues-per-linter=0 run
+
+# BUILD #############
+
+gen-proto: ##@build generate buf connect client for Compass service
+	@buf generate https://github.com/odpf/proton/archive/${PROTON_COMMIT}.zip#strip_components=1 \
+		--template buf.gen.yaml \
+		--path odpf/assets/v1beta2/asset.proto \
+		--path odpf/assets/v1beta2/common.proto \
+		--path odpf/assets/v1beta2/feature_table.proto \
+		-v
 
 # TESTS #############
 

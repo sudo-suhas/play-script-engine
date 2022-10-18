@@ -1,0 +1,11 @@
+version: v1
+plugins:
+  - remote: buf.build/protocolbuffers/plugins/go:v1.28.1-1
+    out: proto/asset
+    opt:
+      - paths=import
+      - module=github.com/sudo-suhas/play-script-engine/proto/asset
+      - Modpf/assets/v1beta2/asset.proto=github.com/sudo-suhas/play-script-engine/proto/asset;asset
+      - Modpf/assets/v1beta2/common.proto=github.com/sudo-suhas/play-script-engine/proto/asset;asset
+      - Modpf/assets/v1beta2/feature_table.proto=github.com/sudo-suhas/play-script-engine/proto/asset;asset
+
