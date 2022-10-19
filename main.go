@@ -10,6 +10,7 @@ import (
 	"github.com/sudo-suhas/xgo/httputil"
 	"google.golang.org/protobuf/encoding/protojson"
 
+	"github.com/sudo-suhas/play-script-engine/bloblang"
 	"github.com/sudo-suhas/play-script-engine/goja"
 	"github.com/sudo-suhas/play-script-engine/gopherlua"
 	"github.com/sudo-suhas/play-script-engine/otto"
@@ -37,7 +38,7 @@ func main() {
 func run(ctx context.Context, args []string, logger log.FieldLogger) error {
 	const op = "run"
 
-	engine := "goja"
+	engine := "bloblang"
 	if len(args) != 0 {
 		engine = args[0]
 	}
@@ -64,6 +65,9 @@ func run(ctx context.Context, args []string, logger log.FieldLogger) error {
 
 	case "goja":
 		t = &goja.Transformer{URLer: urler}
+
+	case "bloblang":
+		t = &bloblang.Transformer{URLer: urler}
 
 	default:
 		return errors.E(errors.WithOp(op), errors.WithTextf("unknown script engine: %s", engine))
