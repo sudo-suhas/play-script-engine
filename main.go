@@ -10,7 +10,7 @@ import (
 	"github.com/sudo-suhas/xgo/httputil"
 	"google.golang.org/protobuf/encoding/protojson"
 
-	"github.com/sudo-suhas/play-script-engine/gopherlua"
+	"github.com/sudo-suhas/play-script-engine/otto"
 	"github.com/sudo-suhas/play-script-engine/proto/asset"
 	"github.com/sudo-suhas/play-script-engine/sample"
 )
@@ -48,7 +48,8 @@ func run(ctx context.Context, logger log.FieldLogger) error {
 	urler := func(name string) string { return ub.NewURLBuilder().Path(name).URL().String() }
 
 	var t transformer //nolint: gosimple
-	t = &gopherlua.Transformer{URLer: urler}
+	// t = &gopherlua.Transformer{URLer: urler}
+	t = &otto.Transformer{URLer: urler}
 	if err := t.T(ctx, a); err != nil {
 		return errors.E(errors.WithOp(op), errors.WithText("transform"), errors.WithErr(err))
 	}
