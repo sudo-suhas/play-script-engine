@@ -33,12 +33,12 @@ _.each(data.features, function(f) {
 	}
 })
 
-asset.owners = [{ name: "Big Mom", email: "big.mom@wholecakeisland.com" }].concat(asset.owners);
+asset.owners = [{ name: 'Big Mom', email: 'big.mom@wholecakeisland.com' }].concat(asset.owners);
 
 asset.url = urler(asset.name);
 
 _.chain(asset.lineage.upstreams)
-	.filter(function(u) { return u.service === "kafka"; })
+	.filter(function(u) { return u.service === 'kafka'; })
 	.each(function(u) { u.urn = u.urn.replace('.yonkou.io', ''); });
 `
 
