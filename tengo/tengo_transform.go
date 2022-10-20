@@ -2,7 +2,6 @@ package tengo
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/d5/tengo/v2"
 	"github.com/d5/tengo/v2/stdlib"
@@ -64,7 +63,7 @@ func (t *Transformer) T(ctx context.Context, a *asset.Asset) error {
 		return errors.E(errors.WithOp(op), errors.WithErr(err))
 	}
 
-	m, err := assetAsMap(wrapper)
+	m, err := wrapper.EncodeWithoutTypes()
 	if err != nil {
 		return errors.E(errors.WithOp(op), errors.WithErr(err))
 	}
@@ -90,36 +89,4 @@ func (t *Transformer) T(ctx context.Context, a *asset.Asset) error {
 	}
 
 	return nil
-}
-
-func assetAsMap(w *structmap.AssetWrapper) (map[string]interface{}, error) {
-	const op = "tengo.assetAsMap"
-
-	m, err := mapWithoutTypes(w.Asset)
-	if err != nil {
-		return nil, errors.E(errors.WithOp(op), errors.WithErr(err))
-	}
-
-	m["data"], err = mapWithoutTypes(w.UnmarshaledData)
-	if err != nil {
-		return nil, errors.E(errors.WithOp(op), errors.WithErr(err))
-	}
-
-	return m, nil
-}
-
-func mapWithoutTypes(v interface{}) (map[string]interface{}, error) {
-	const op = "tengo.map"
-
-	data, err := json.Marshal(v)
-	if err != nil {
-		return nil, errors.E(errors.WithOp(op), errors.WithErr(err))
-	}
-
-	var res map[string]interface{}
-	if err := json.Unmarshal(data, &res); err != nil {
-		return nil, errors.E(errors.WithOp(op), errors.WithErr(err))
-	}
-
-	return res, nil
 }

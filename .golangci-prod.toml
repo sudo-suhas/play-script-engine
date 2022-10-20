@@ -196,5 +196,5 @@
   # it can be disabled by `exclude-use-default: false`. To list all
   # excluded by default patterns execute `golangci-lint run --help`
   exclude=[
-    'declaration of "(err|ctx)" shadows declaration at',
+    'declaration of "(err|ctx|ok)" shadows declaration at',
   ]

@@ -6,13 +6,14 @@ import (
 	"os"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/sudo-suhas/play-script-engine/anko"
 	"github.com/sudo-suhas/xgo/errors"
 	"github.com/sudo-suhas/xgo/httputil"
 	"google.golang.org/protobuf/encoding/protojson"
 
+	"github.com/sudo-suhas/play-script-engine/anko"
 	"github.com/sudo-suhas/play-script-engine/bloblang"
 	"github.com/sudo-suhas/play-script-engine/goja"
+	"github.com/sudo-suhas/play-script-engine/gojq"
 	"github.com/sudo-suhas/play-script-engine/golua"
 	"github.com/sudo-suhas/play-script-engine/gopherlua"
 	"github.com/sudo-suhas/play-script-engine/otto"
@@ -41,7 +42,7 @@ func main() {
 func run(ctx context.Context, args []string, logger log.FieldLogger) error {
 	const op = "run"
 
-	engine := "anko"
+	engine := "gojq"
 	if len(args) != 0 {
 		engine = args[0]
 	}
@@ -81,6 +82,9 @@ func run(ctx context.Context, args []string, logger log.FieldLogger) error {
 	case "anko":
 		t = &anko.Transformer{URLer: urler}
 
+	case "gojq":
+		t = &gojq.Transformer{URLer: urler}
+
 	default:
 		return errors.E(errors.WithOp(op), errors.WithTextf("unknown script engine: %s", engine))
 	}
@@ -99,7 +103,7 @@ func run(ctx context.Context, args []string, logger log.FieldLogger) error {
 
 type transformer interface {
 	// T should do the following:
-	// - Add a label to the asset - "script_engine": "<current_script_engine>
+	// - Add a label to the asset - "script_engine": "<current_script_engine>"
 	// - Add a label to each entity. Ex: "catch_phrase": "..."
 	// - Set an EntityName for each feature based on the following table
 	//   - ongoing_placed_and_waiting_acceptance_orders: customer_orders

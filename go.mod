@@ -9,6 +9,7 @@ require (
 	github.com/d5/tengo/v2 v2.13.0
 	github.com/dop251/goja v0.0.0-20221003171542-5ea1285e6c91
 	github.com/fatih/structs v1.1.0
+	github.com/itchyny/gojq v0.12.6
 	github.com/mattn/anko v0.1.9
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/robertkrimen/otto v0.0.0-20221011175642-09fc211e5ab1
@@ -30,6 +31,7 @@ require (
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/gorilla/css v1.0.0 // indirect
+	github.com/itchyny/timefmt-go v0.1.3 // indirect
 	github.com/matoous/go-nanoid/v2 v2.0.0 // indirect
 	github.com/microcosm-cc/bluemonday v1.0.19 // indirect
 	github.com/segmentio/ksuid v1.0.4 // indirect
