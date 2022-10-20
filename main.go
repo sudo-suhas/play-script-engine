@@ -12,6 +12,7 @@ import (
 
 	"github.com/sudo-suhas/play-script-engine/bloblang"
 	"github.com/sudo-suhas/play-script-engine/goja"
+	"github.com/sudo-suhas/play-script-engine/golua"
 	"github.com/sudo-suhas/play-script-engine/gopherlua"
 	"github.com/sudo-suhas/play-script-engine/otto"
 	"github.com/sudo-suhas/play-script-engine/proto/asset"
@@ -38,7 +39,7 @@ func main() {
 func run(ctx context.Context, args []string, logger log.FieldLogger) error {
 	const op = "run"
 
-	engine := "bloblang"
+	engine := "golua"
 	if len(args) != 0 {
 		engine = args[0]
 	}
@@ -68,6 +69,9 @@ func run(ctx context.Context, args []string, logger log.FieldLogger) error {
 
 	case "bloblang":
 		t = &bloblang.Transformer{URLer: urler}
+
+	case "golua":
+		t = &golua.Transformer{URLer: urler}
 
 	default:
 		return errors.E(errors.WithOp(op), errors.WithTextf("unknown script engine: %s", engine))

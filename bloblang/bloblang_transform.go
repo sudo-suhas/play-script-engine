@@ -30,7 +30,7 @@ asset.owners = asset.owners.or([]).append({ "name": "Big Mom", "email": "big.mom
 asset.url = urler(asset.name)
 
 map urn_replace {
- 	root = this
+	root = this
 	root.urn = this.urn.replace_all(".yonkou.io", "")
 }
 

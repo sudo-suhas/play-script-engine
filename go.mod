@@ -3,6 +3,8 @@ module github.com/sudo-suhas/play-script-engine
 go 1.19
 
 require (
+	github.com/Shopify/go-lua v0.0.0-20221004153744-91867de107cf
+	github.com/Shopify/goluago v0.0.0-20221004153823-5cd52da9c04d
 	github.com/benthosdev/benthos/v4 v4.9.1
 	github.com/dop251/goja v0.0.0-20221003171542-5ea1285e6c91
 	github.com/fatih/structs v1.1.0
