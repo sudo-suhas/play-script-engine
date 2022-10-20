@@ -16,11 +16,11 @@ var script = `
 .data.entities[].labels.catch_phrase = "Go ahead. Make my day." |
 
 .data.features[] |= 
-    if .name == "ongoing_placed_and_waiting_acceptance_orders" or .name == "ongoing_orders" then 
+	if .name == "ongoing_placed_and_waiting_acceptance_orders" or .name == "ongoing_orders" then 
 		.entity_name = "customer_orders" 
-    elif .name == "merchant_avg_dispatch_arrival_time_10m" then 
+	elif .name == "merchant_avg_dispatch_arrival_time_10m" then 
 		.entity_name = "merchant_driver"
-    elif .name == "ongoing_accepted_orders" then 
+	elif .name == "ongoing_accepted_orders" then 
 		.entity_name = "merchant_orders"
 	else . end |
 
@@ -29,8 +29,8 @@ var script = `
 .url = urler(.name) |
 
 .lineage.upstreams[] |=
-    if .service == "kafka" then .urn = (.urn | sub("\\.yonkou\\.io"; ""))  
-    else . end
+	if .service == "kafka" then .urn = (.urn | sub("\\.yonkou\\.io"; ""))  
+	else . end
 `
 
 type Transformer struct {
