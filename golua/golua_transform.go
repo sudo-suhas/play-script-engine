@@ -6,7 +6,6 @@ import (
 	"github.com/Shopify/go-lua"
 	luautil "github.com/Shopify/goluago/util"
 	"github.com/sudo-suhas/xgo/errors"
-	"google.golang.org/protobuf/types/known/anypb"
 
 	"github.com/sudo-suhas/play-script-engine/proto/asset"
 	"github.com/sudo-suhas/play-script-engine/structmap"
@@ -70,14 +69,12 @@ func (t *Transformer) T(_ context.Context, a *asset.Asset) error {
 		lua.Require(l, lib.Name, lib.Function, true)
 	}
 
-	data, err := a.Data.UnmarshalNew()
+	wrapper, err := structmap.NewAssetWrapper(a)
 	if err != nil {
 		return errors.E(errors.WithOp(op), errors.WithErr(err))
 	}
 
-	m := structmap.Map(a)
-	m["data"] = structmap.Map(data)
-	luautil.DeepPush(l, m)
+	luautil.DeepPush(l, wrapper.Encode())
 	l.SetGlobal("asset")
 
 	l.Register("urler", func(l *lua.State) int {
@@ -107,17 +104,7 @@ func (t *Transformer) T(_ context.Context, a *asset.Asset) error {
 		return errors.E(errors.WithOp(op), errors.WithTextf("unexpected result: %T", v), errors.WithErr(err))
 	}
 
-	if err := structmap.Struct(res["data"], &data); err != nil {
-		return errors.E(errors.WithOp(op), errors.WithText("decode map"), errors.WithErr(err))
-	}
-
-	delete(res, "data")
-	if err := structmap.Struct(res, a); err != nil {
-		return errors.E(errors.WithOp(op), errors.WithText("decode map"), errors.WithErr(err))
-	}
-
-	a.Data, err = anypb.New(data)
-	if err != nil {
+	if err := wrapper.OverwriteWith(res); err != nil {
 		return errors.E(errors.WithOp(op), errors.WithErr(err))
 	}
 

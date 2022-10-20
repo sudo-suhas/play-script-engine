@@ -5,7 +5,6 @@ import (
 
 	"github.com/benthosdev/benthos/v4/public/bloblang"
 	"github.com/sudo-suhas/xgo/errors"
-	"google.golang.org/protobuf/types/known/anypb"
 
 	"github.com/sudo-suhas/play-script-engine/proto/asset"
 	"github.com/sudo-suhas/play-script-engine/structmap"
@@ -72,30 +71,19 @@ func (t *Transformer) T(_ context.Context, a *asset.Asset) error {
 		return errors.E(errors.WithOp(op), errors.WithText("parse mapping"), errors.WithErr(err))
 	}
 
-	data, err := a.Data.UnmarshalNew()
+	wrapper, err := structmap.NewAssetWrapper(a)
 	if err != nil {
 		return errors.E(errors.WithOp(op), errors.WithErr(err))
 	}
 
-	m := structmap.Map(a)
-	m["data"] = structmap.Map(data)
+	m := wrapper.Encode()
 	var v interface{} = map[string]interface{}{"asset": m}
 	if err := exe.Overlay(v, &v); err != nil {
 		return errors.E(errors.WithOp(op), errors.WithText("execute mapping"), errors.WithErr(err))
 	}
 
-	if err := structmap.Struct(m["data"], &data); err != nil {
+	if err := wrapper.OverwriteWith(m); err != nil {
 		return errors.E(errors.WithOp(op), errors.WithText("decode map"), errors.WithErr(err))
-	}
-
-	delete(m, "data")
-	if err := structmap.Struct(m, a); err != nil {
-		return errors.E(errors.WithOp(op), errors.WithText("decode map"), errors.WithErr(err))
-	}
-
-	a.Data, err = anypb.New(data)
-	if err != nil {
-		return errors.E(errors.WithOp(op), errors.WithErr(err))
 	}
 
 	return nil

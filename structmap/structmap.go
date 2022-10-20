@@ -6,14 +6,14 @@ import (
 	"github.com/sudo-suhas/xgo/errors"
 )
 
-func Map(v interface{}) map[string]interface{} {
+func AsMap(v interface{}) map[string]interface{} {
 	s := structs.New(v)
 	s.TagName = "json"
 	return s.Map()
 }
 
-func Struct(input, output interface{}) error {
-	const op = "structmap.Struct"
+func AsStruct(input, output interface{}) error {
+	const op = "structmap.AsStruct"
 
 	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{
 		ErrorUnused: true,

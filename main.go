@@ -17,6 +17,7 @@ import (
 	"github.com/sudo-suhas/play-script-engine/otto"
 	"github.com/sudo-suhas/play-script-engine/proto/asset"
 	"github.com/sudo-suhas/play-script-engine/sample"
+	"github.com/sudo-suhas/play-script-engine/tengo"
 )
 
 func main() {
@@ -39,7 +40,7 @@ func main() {
 func run(ctx context.Context, args []string, logger log.FieldLogger) error {
 	const op = "run"
 
-	engine := "golua"
+	engine := "tengo"
 	if len(args) != 0 {
 		engine = args[0]
 	}
@@ -72,6 +73,9 @@ func run(ctx context.Context, args []string, logger log.FieldLogger) error {
 
 	case "golua":
 		t = &golua.Transformer{URLer: urler}
+
+	case "tengo":
+		t = &tengo.Transformer{URLer: urler}
 
 	default:
 		return errors.E(errors.WithOp(op), errors.WithTextf("unknown script engine: %s", engine))
