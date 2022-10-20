@@ -6,6 +6,7 @@ import (
 	"os"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/sudo-suhas/play-script-engine/anko"
 	"github.com/sudo-suhas/xgo/errors"
 	"github.com/sudo-suhas/xgo/httputil"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -40,7 +41,7 @@ func main() {
 func run(ctx context.Context, args []string, logger log.FieldLogger) error {
 	const op = "run"
 
-	engine := "tengo"
+	engine := "anko"
 	if len(args) != 0 {
 		engine = args[0]
 	}
@@ -76,6 +77,9 @@ func run(ctx context.Context, args []string, logger log.FieldLogger) error {
 
 	case "tengo":
 		t = &tengo.Transformer{URLer: urler}
+
+	case "anko":
+		t = &anko.Transformer{URLer: urler}
 
 	default:
 		return errors.E(errors.WithOp(op), errors.WithTextf("unknown script engine: %s", engine))
