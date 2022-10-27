@@ -38,6 +38,7 @@ if asset.owners == nil then
 	-- asset.owners gets initialised as a map and decoding into *asset.Asset fails.
 	-- asset.owners = {}
 end
+-- Inserting into the table fails with runtime error: invalid key to 'next'
 -- table.insert(asset.owners, {name = "Big Mom", email = "big.mom@wholecakeisland.com"})
 
 asset.url = urler(asset.name)
